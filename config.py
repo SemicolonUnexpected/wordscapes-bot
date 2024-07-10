@@ -1,7 +1,7 @@
 # Hardware
 
 # Phone size in mm
-phone_screen_width, phone_screen_height = 65, 142
+phone_width, phone_height = 65, 142
 
 # Connections for adb. IP is a string, port is a number
 phone_ip = "192.168.1.105"

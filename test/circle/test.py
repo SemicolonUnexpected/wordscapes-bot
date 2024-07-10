@@ -24,7 +24,7 @@ def GetWheel(image: str, wheel_location: Rectangle):
     # Find the wheel
     gray_image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     circles = cv.HoughCircles(gray_image,cv.HOUGH_GRADIENT,2,200,
-                              param1=150,param2=150,minRadius=300,maxRadius=700)
+                              param1=200,param2=200,minRadius=300,maxRadius=700)
 
     print(circles)
 
@@ -43,3 +43,6 @@ def GetWheel(image: str, wheel_location: Rectangle):
     # The wheel can be black or white
     
         
+
+image = cv.imread("./../image/test-2/original-2.jpg")
+GetWheel(image, None)
