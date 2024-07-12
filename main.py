@@ -7,8 +7,7 @@ def Setup():
     print("##### Wordscapes Bot ######\n");
 
     # Some setup data
-    print("Before preceeding ensure the following configuration data is correct."
-          + "also ensure that the stylus is in the top left corner of the screen, just touching it\n")
+    print("Before preceeding ensure the following configuration data is correct")
     
     # Print out some of the configuration info
     print("----- Phone -----\n" 
@@ -23,7 +22,8 @@ def Setup():
     # Await a start command
     response = ""
     while response != "y" and response != "Y":
-        response = input("Are you ready to start? [Ny] ")
+        response = input("Ready to setup? [Ny] ")
+
 
 def main():
     Setup()

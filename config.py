@@ -8,5 +8,5 @@ phone_ip = "192.168.1.105"
 phone_port = 1234
 
 # Printer
-printer_ip = "192.168.1.123"
-printer_port = 1234
+printer_ip = "192.168.1.144"
+printer_port = 7125
