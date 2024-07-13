@@ -1,4 +1,3 @@
-import printer_manager
+from vision import get_wheel
 
-print(printer_manager.check_status())
-print(printer_manager.get_position())
+get_wheel()

@@ -1,8 +1,9 @@
 import cv2 as cv
 import numpy as np
 import config
+import printer_manager
 
-def Setup():
+def setup():
     # The title
     print("##### Wordscapes Bot ######\n");
 
@@ -24,9 +25,15 @@ def Setup():
     while response != "y" and response != "Y":
         response = input("Ready to setup? [Ny] ")
 
+    print("\n----- Calibrating Printer ------")
+    printer_manager.calibrate()
+
+    
+
+
 
 def main():
-    Setup()
+    setup()
 
 
 if __name__ == "__main__":
