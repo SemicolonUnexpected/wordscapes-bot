@@ -14,18 +14,24 @@ def get_wheel():
                               param1=200,param2=150,minRadius=width//5,maxRadius=width//3)
 
 
-    # Create an image with the wheel circle drawn on to 
+    circles = circles[0]
     circles = np.uint16(circles)
-    for i in circles[0, :]:
-        center = (i[0], i[1])
-        # Circle center
-        cv.circle(image, center, 2, (0, 0, 255), 3)
-        # Circle outline
-        radius = i[2]
-        cv.circle(image, center, radius, (255, 0, 255), 3)
+
+    assert len(circles) == 1
+
+    circle = circles[0]
+
+    # Create an image with the wheel circle drawn on to it for debugging purposes
+    center = (circle[0], circle[1])
+    # Circle center
+    cv.circle(image, center, 2, (0, 0, 255), 3)
+    # Circle outline
+    radius = circle[2]
+    cv.circle(image, center, radius, (255, 0, 255), 3)
 
     cv.imwrite("circled.png", image)
 
     # Sample the center point on the wheel
     # The wheel can be black or white
          
+get_wheel()
