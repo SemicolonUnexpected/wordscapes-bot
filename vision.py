@@ -8,10 +8,13 @@ references = []
 # Get the reference images
 references_paths = Path("./references").glob("**/*.png")
 for path in references_paths:
-    references.append((str(path)[11], cv.imread(str(path))))
+    references.append((str(path)[11], cv.imread(str(path), cv.IMREAD_GRAYSCALE)))
 
 
 def get_wheel():
+    # We will return a list of dict, the first being the letter, then the location
+    wheel = dict()
+
     # Get the image
     image = cv.imread("screen/10.png")
     height, width, channels = image.shape
@@ -50,17 +53,22 @@ def get_wheel():
     for cnt in contours:
         x,y,w,h = cv.boundingRect(cnt)
         letter = letters[y: y + h, x: x + w]
-        cv.imwrite(f"references/{x}.png", letter)
+        wheel[get_letter(letter)] = (x + w/2, y + h/2)
+
+    return wheel
 
 
 def get_letter(letter_image):
-    min_error = -1
+    min_error = letter_image.size + 1
     min_error_letter = None
     for reference in references:
-        resized = cv.resize(reference, letter_image.shape[:2])
-        bin_xor = cv.binary_xor(reference, letter_image)
-        cv.imwrite("images/binxor.png", bin_xor)
-        count = np.sum(bin_xor > 0)
-        print(count)
+        resized = cv.resize(reference[1], tuple(letter_image.shape[1::-1]))
+        bit_xor = cv.bitwise_xor(resized, letter_image)
+        count = cv.countNonZero(bit_xor)
+        if count < min_error:
+            min_error = count
+            min_error_letter = reference[0]
+    return min_error_letter
 
-get_wheel()
+
+print(get_wheel())
