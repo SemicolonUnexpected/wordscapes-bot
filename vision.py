@@ -5,7 +5,7 @@ import pytesseract
 
 def get_wheel():
     # Get the image
-    image = cv.imread("screen.png")
+    image = cv.imread("screen/16.jpeg")
     height, width, channels = image.shape
 
     # Find the wheel
@@ -26,14 +26,18 @@ def get_wheel():
 
     # Threshold the image
     if grey_image[circle[1], circle[0]] == 0:
-        _, thresh = cv.threshold(grey_image, 250, 255, cv.THRESH_BINARY)
+        _, thresh = cv.threshold(grey_image, 50, 255, cv.THRESH_BINARY)
     else:
-        _, thresh = cv.threshold(grey_image, 250, 255, cv.THRESH_BINARY_INV)
+        _, thresh = cv.threshold(grey_image, 50, 255, cv.THRESH_BINARY_INV)
+
+    cv.imwrite("images/test1.png", thresh)
 
     # Make a mask of everything but the wheel
     mask = np.zeros((height, width), dtype="uint8")
-    cv.circle(mask, center, radius - 5, 255, -1)
+    cv.circle(mask, center, radius-10, 255, -1)
     letters = cv.bitwise_and(thresh, thresh, mask=mask)
+
+    cv.imwrite("images/test.png", letters)
 
     # Find contours
     contours, hierarchy = cv.findContours(letters, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
@@ -41,10 +45,8 @@ def get_wheel():
     # Bounding rectangles
     for cnt in contours:
         x,y,w,h = cv.boundingRect(cnt)
-        cv.rectangle(image, (x,y), (x+w,y+h), (255,0,0), 2)
-    cv.imwrite("images/bounding.png", image)
-
-    cv.imwrite("images/mask-and-thresh.png", letters)
+        letter = letters[y: y + h, x: x + w]
+        cv.imwrite(f"references/{x}.png", letter)
 
          
 get_wheel()
