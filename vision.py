@@ -1,11 +1,19 @@
 import cv2 as cv
 import numpy as np
-import pytesseract
+from pathlib import Path
+
+
+references = []
+
+# Get the reference images
+references_paths = Path("./references").glob("**/*.png")
+for path in references_paths:
+    references.append((str(path)[11], cv.imread(str(path))))
 
 
 def get_wheel():
     # Get the image
-    image = cv.imread("screen/16.jpeg")
+    image = cv.imread("screen/10.png")
     height, width, channels = image.shape
 
     # Find the wheel
@@ -30,14 +38,10 @@ def get_wheel():
     else:
         _, thresh = cv.threshold(grey_image, 50, 255, cv.THRESH_BINARY_INV)
 
-    cv.imwrite("images/test1.png", thresh)
-
     # Make a mask of everything but the wheel
     mask = np.zeros((height, width), dtype="uint8")
     cv.circle(mask, center, radius-10, 255, -1)
     letters = cv.bitwise_and(thresh, thresh, mask=mask)
-
-    cv.imwrite("images/test.png", letters)
 
     # Find contours
     contours, hierarchy = cv.findContours(letters, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
@@ -48,5 +52,15 @@ def get_wheel():
         letter = letters[y: y + h, x: x + w]
         cv.imwrite(f"references/{x}.png", letter)
 
-         
+
+def get_letter(letter_image):
+    min_error = -1
+    min_error_letter = None
+    for reference in references:
+        resized = cv.resize(reference, letter_image.shape[:2])
+        bin_xor = cv.binary_xor(reference, letter_image)
+        cv.imwrite("images/binxor.png", bin_xor)
+        count = np.sum(bin_xor > 0)
+        print(count)
+
 get_wheel()
