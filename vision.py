@@ -1,6 +1,7 @@
 import cv2 as cv
 import numpy as np
 from pathlib import Path
+import config
 
 
 references = []
@@ -53,7 +54,9 @@ def get_wheel():
     for cnt in contours:
         x,y,w,h = cv.boundingRect(cnt)
         letter = letters[y: y + h, x: x + w]
-        wheel[get_letter(letter)] = (x + w/2, y + h/2)
+        x_position = ((x + w/2)/width)*config.phone_width
+        y_position = ((y + h/2)/height)*config.phone_height
+        wheel[get_letter(letter)] = (x_position, y_position)
 
     return wheel
 

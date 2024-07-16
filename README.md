@@ -1,4 +1,4 @@
-# wordle-bot
+# bottle-word
 
 This is quite a painful challenge...
 
