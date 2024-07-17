@@ -1,9 +1,6 @@
-import config
-
-
 class Gcode:
     gcode = []
-    
+
     def __init__(self, screen_height):
         self.screen_height = screen_height
 

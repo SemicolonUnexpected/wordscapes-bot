@@ -18,4 +18,4 @@ printer_min_z = 3
 # Software
 
 # Adb...
-client_port = 5037 # Default port for the adb deamon
+client_port = 5037  # Default port for the adb deamon

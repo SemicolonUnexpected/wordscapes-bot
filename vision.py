@@ -1,6 +1,7 @@
-import cv2 as cv
-import numpy as np
 from pathlib import Path
+import numpy as np
+import cv2 as cv
+
 import config
 
 
@@ -9,7 +10,8 @@ references = []
 # Get the reference images
 references_paths = Path("./references").glob("**/*.png")
 for path in references_paths:
-    references.append((str(path)[11], cv.imread(str(path), cv.IMREAD_GRAYSCALE)))
+    references.append((str(path)[11], cv.imread(str(path),
+                                                cv.IMREAD_GRAYSCALE)))
 
 
 def get_wheel():
@@ -18,13 +20,14 @@ def get_wheel():
     wheel = dict()
 
     # Get the image
-    image = cv.imread("screen/10.png")
+    image = cv.imread("screen/screen.png")
     height, width, channels = image.shape
 
     # Find the wheel
     grey_image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     circles = cv.HoughCircles(grey_image, cv.HOUGH_GRADIENT, 2, 200,
-                              param1=200,param2=150,minRadius=width//5,maxRadius=width//3)
+                              param1=200, param2=150, minRadius=width//5,
+                              maxRadius=width//3)
 
     circles = circles[0]
     circles = np.uint16(circles)
@@ -48,11 +51,12 @@ def get_wheel():
     letters = cv.bitwise_and(thresh, thresh, mask=mask)
 
     # Find contours
-    contours, hierarchy = cv.findContours(letters, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+    contours, hierarchy = cv.findContours(letters, cv.RETR_EXTERNAL,
+                                          cv.CHAIN_APPROX_SIMPLE)
 
     # Bounding rectangles
     for cnt in contours:
-        x,y,w,h = cv.boundingRect(cnt)
+        x, y, w, h = cv.boundingRect(cnt)
         letter = letters[y: y + h, x: x + w]
         x_position = ((x + w/2)/width)*config.phone_width
         y_position = ((y + h/2)/height)*config.phone_height
