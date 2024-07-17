@@ -13,7 +13,8 @@ for path in references_paths:
 
 
 def get_wheel():
-    # We will return a list of dict, the first being the letter, then the location
+    # We will return a list of dict, the first being the letter,
+    # then the location
     wheel = dict()
 
     # Get the image
@@ -22,9 +23,8 @@ def get_wheel():
 
     # Find the wheel
     grey_image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-    circles = cv.HoughCircles(grey_image,cv.HOUGH_GRADIENT,2,200,
+    circles = cv.HoughCircles(grey_image, cv.HOUGH_GRADIENT, 2, 200,
                               param1=200,param2=150,minRadius=width//5,maxRadius=width//3)
-
 
     circles = circles[0]
     circles = np.uint16(circles)
