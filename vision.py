@@ -20,11 +20,12 @@ def get_wheel():
     wheel = dict()
 
     # Get the image
-    image = cv.imread("screen/screen.png")
+    image = cv.imread("screen.png")
     height, width, channels = image.shape
 
     # Find the wheel
     grey_image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+    grey_image = cv.blur(grey_image, (5, 5))
     circles = cv.HoughCircles(grey_image, cv.HOUGH_GRADIENT, 2, 200,
                               param1=200, param2=150, minRadius=width//5,
                               maxRadius=width//3)
@@ -33,7 +34,9 @@ def get_wheel():
     circles = np.uint16(circles)
 
     # There should only be one circle
-    assert len(circles) == 1
+    for circle in circles:
+        print(f"Found the circle of radius {circle[2]} at {circle[0]}, "
+              + f"{circle[1]}")
 
     circle = circles[0]
     center = (circle[0], circle[1])
@@ -55,12 +58,14 @@ def get_wheel():
                                           cv.CHAIN_APPROX_SIMPLE)
 
     # Bounding rectangles
+    wheel = []
     for cnt in contours:
         x, y, w, h = cv.boundingRect(cnt)
         letter = letters[y: y + h, x: x + w]
         x_position = ((x + w/2)/width)*config.phone_width
         y_position = ((y + h/2)/height)*config.phone_height
-        wheel[get_letter(letter)] = (x_position, y_position)
+        wheel.append((get_letter(letter), (round(x_position, 2),
+                                           round(y_position, 2))))
 
     return wheel
 
@@ -76,6 +81,3 @@ def get_letter(letter_image):
             min_error = count
             min_error_letter = reference[0]
     return min_error_letter
-
-
-print(get_wheel())

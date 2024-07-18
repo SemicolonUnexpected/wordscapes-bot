@@ -1,3 +1,6 @@
+from printer_manager import start_position
+
+
 class Gcode:
     gcode = []
 
@@ -10,8 +13,8 @@ class Gcode:
     def hop_down(self):
         self.gcode.append(f"G1 Z{self.screen_height} F10000")
 
-    def goto(self, x, y):
-        self.gcode.append(f"G1 X{x} Y{y} F10000")
+    def goto(self, position):
+        self.gcode.append(f"G1 X{position[0]} Y{position[1]} F10000")
 
     def get_code(self):
         return "\n".join(self.gcode)

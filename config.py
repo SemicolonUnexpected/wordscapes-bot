@@ -5,7 +5,7 @@ phone_width, phone_height = 65, 142
 
 # Connections for adb. IP is a string, port is a number
 phone_ip = "192.168.1.105"
-phone_port = 33051
+phone_port = 5555
 
 
 # Printer

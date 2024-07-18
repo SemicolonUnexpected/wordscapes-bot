@@ -2,6 +2,8 @@ import config
 import vision
 import printer_manager
 import phone_manager
+import word_gen
+from gcode import Gcode
 
 
 def setup():
@@ -29,10 +31,10 @@ def setup():
 
     # Connect the hardware
     print("\n----- Calibrating Printer ------")
-    printer_manager.calibrate()
+#    printer_manager.calibrate()
 
     print("\n----- Connecting to phone -----")
-    printer_manager.connect()
+    phone_manager.connect()
 
     # Start the printer
     while True:
@@ -52,11 +54,22 @@ def solve_wordle():
 
     print("Analyzing...")
 
-    letters = vision.get_wheel()
+    letter_data = vision.get_wheel()
 
-    for letter in letters:
-        print(f"Found letter '{letters[0]}' at "
-              + f"position: {round(letter[1], 2)}mm from the top left")
+    for letter in letter_data:
+        print(f"Found letter '{letter[0]}' at "
+              + f"position: {letter[1]}mm from the top left")
+
+    print("Generating words...")
+
+    letters = [letter[0] for letter in letter_data]
+    words = word_gen.get_possibilities(letters)
+
+    print("Found the words...")
+    for word in words:
+        print(word)
+
+    print("Generating gcode...")
 
 
 def main():

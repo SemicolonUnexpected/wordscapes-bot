@@ -19,7 +19,9 @@ def connect():
     device = client.device(config.phone_ip + ":"
                            + str(config.phone_port))
 
-    print("Connected.")
+    assert device is not None
+
+    print("Connected")
 
 
 def disconnect():
@@ -30,5 +32,5 @@ def disconnect():
 def screenshot():
     global device
     result = device.screencap()
-    with open("screen/screen.png", "wb") as fp:
+    with open("screen.png", "wb") as fp:
         fp.write(result)
