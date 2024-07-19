@@ -57,8 +57,8 @@ def solve_wordle():
     letter_data = vision.get_wheel()
 
     for letter in letter_data:
-        print(f"Found letter '{letter[0]}' at "
-              + f"position: {letter[1]}mm from the top left")
+        print(f"Found letter '{letter}' at "
+              + f"position(s): {letter_data[letter]}")
 
     print("Generating words...")
 

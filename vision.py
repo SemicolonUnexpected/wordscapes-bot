@@ -58,14 +58,14 @@ def get_wheel():
                                           cv.CHAIN_APPROX_SIMPLE)
 
     # Bounding rectangles
-    wheel = []
+    wheel = dict()
     for cnt in contours:
         x, y, w, h = cv.boundingRect(cnt)
         letter = letters[y: y + h, x: x + w]
         x_position = ((x + w/2)/width)*config.phone_width
         y_position = ((y + h/2)/height)*config.phone_height
-        wheel.append((get_letter(letter), (round(x_position, 2),
-                                           round(y_position, 2))))
+        letter = get_letter(letter)
+        wheel[letter] = wheel.get(letter, []) + [(round(x_position, 2), round(y_position))]
 
     return wheel
 

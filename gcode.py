@@ -6,6 +6,8 @@ class Gcode:
 
     def __init__(self, screen_height):
         self.screen_height = screen_height
+        self.hop_up()
+        self.goto(start_position)
 
     def hop_up(self):
         self.gcode.append(f"G1 Z{self.screen_height + 3} F10000")
