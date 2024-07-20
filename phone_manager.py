@@ -1,36 +1,21 @@
-from ppadb.client import Client as AdbClient
-import config
-
-
-# The adb client
-client = None
-# The connected device
-device = None
+import subprocess
 
 
 def connect():
-    global device
-    global client
+    subprocess.run(["adb", "start-server"])
+    subprocess.run(["adb", "detach"])
 
-    print("Connecting...")
-    client = AdbClient("127.0.0.1", port=config.client_port)
-    client.remote_connect(config.phone_ip, config.phone_port)
+    result = subprocess.run(["adb", "attach"], capture_output=True)
 
-    device = client.device(config.phone_ip + ":"
-                           + str(config.phone_port))
-
-    assert device is not None
+    if result.returncode == 1:
+        print("Failed to connect to phone. Ensure it is connected via usb")
+        exit(1)
 
     print("Connected")
 
 
-def disconnect():
-    global client
-    client.remote_disconnect()  # Disconnect from all devices
-
-
 def screenshot():
-    global device
-    result = device.screencap()
+    result = subprocess.run(["adb", "exec-out", "screencap", "-p"],
+                            capture_output=True)
     with open("screen.png", "wb") as fp:
-        fp.write(result)
+        fp.write(result.stdout)

@@ -31,7 +31,12 @@ def setup():
 
     # Connect the hardware
     print("\n----- Calibrating Printer ------")
-#    printer_manager.calibrate()
+    printer_manager.calibrate()
+
+    print("\n----- Connecting to phone -----")
+    phone_manager.connect()
+
+    print(printer_manager.start_position)
 
     # Start the printer
     while True:
@@ -43,11 +48,9 @@ def solve_wordle():
     while response != "y" and response != "Y":
         response = input("Start a wordle game. Ready to start? [Ny] ")
 
-    print("\n----- Connecting to phone -----")
-    phone_manager.connect()
-
     print("\n----- Taking Screenshot -----")
     phone_manager.screenshot()
+
     print("Screenshot aquired")
 
     print("Analyzing...")
@@ -75,9 +78,6 @@ def solve_wordle():
             gcode.hop_down()
             letter_data[letter].append(position := letter_data[letter].pop(0))
             gcode.goto(position)
-
-    print("Disconnecting from phone...")
-    phone_manager.disconnect()
 
     print("Sending to printer...")
     print(gcode.get_code())
