@@ -1,8 +1,6 @@
-# bottle-word
+# wordscapes bot
 
 This is quite a painful challenge...
-
-<br\>
 
 The premise is as follows; create a way for a 3d printer to automatically play wordscapes with a stylus.
 
