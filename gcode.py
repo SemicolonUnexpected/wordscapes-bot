@@ -1,11 +1,11 @@
-from printer_manager import start_position, screen_height
+from printer_manager import start_position, screen_z_value
 
 
 class Gcode:
     gcode = []
 
     def __init__(self):
-        self.screen_height = screen_height
+        self.screen_height = screen_z_value
         self.hop_up()
         self.goto(start_position)
 
@@ -19,4 +19,6 @@ class Gcode:
         self.gcode.append(f"G1 X{position[0]} Y{position[1]} F10000")
 
     def get_code(self):
+        self.hop_up()
+        self.goto(start_position)
         return "\n".join(self.gcode)

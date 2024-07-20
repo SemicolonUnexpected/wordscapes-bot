@@ -4,7 +4,7 @@ import json
 
 
 screen_z_value = config.printer_min_z
-start_position = None
+start_position = (0, 0)
 
 
 def get_url():
@@ -80,3 +80,8 @@ def get_position():
                             + "/printer/objects/query?gcode_move=position")
     response = json.loads(response.text)
     return response["result"]["status"]["gcode_move"]["position"]
+
+
+def send_script(script):
+    requests.post(get_url()
+                  + f"/printer/gcode/script?script={script}")
