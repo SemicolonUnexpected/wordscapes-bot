@@ -1,10 +1,10 @@
-from printer_manager import start_position
+from printer_manager import start_position, screen_height
 
 
 class Gcode:
     gcode = []
 
-    def __init__(self, screen_height):
+    def __init__(self):
         self.screen_height = screen_height
         self.hop_up()
         self.goto(start_position)
