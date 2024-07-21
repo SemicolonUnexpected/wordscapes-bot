@@ -11,8 +11,8 @@ def setup():
     print("##### Wordscapes Bot ######\n")
 
     # Some setup data
-    print("Before preceeding ensure the following"
-          + "configuration data is correct")
+    print("Before preceeding ensure the following "
+          + "configuration data is correct\n")
 
     # Print out some of the configuration info
     print("----- Phone -----\n"
@@ -35,8 +35,6 @@ def setup():
 
     print("\n----- Connecting to phone -----")
     phone_manager.connect()
-
-    print(printer_manager.start_position)
 
     # Start the printer
     while True:
@@ -74,15 +72,21 @@ def solve_wordle():
     gcode = Gcode()
     for word in words:
         gcode.hop_up()
-        for letter in word:
-            gcode.hop_down()
+        # Go to the position of the first letter then hop down
+        letter = word[0]
+        letter_data[letter].append(position := letter_data[letter].pop(0))
+        gcode.goto(position)
+        gcode.hop_down()
+
+        # Draw the rest of the word
+        for letter in word[1:]:
             letter_data[letter].append(position := letter_data[letter].pop(0))
             gcode.goto(position)
 
     print("Sending to printer...")
-    print(gcode.get_code())
+    while response != "y" and response != "Y":
+        response = input("Start a wordle game. Ready to start? [Ny] ")
 
-    input("Send to printer")
     printer_manager.send_script(gcode.get_code())
 
 

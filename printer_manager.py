@@ -46,8 +46,25 @@ def calibrate():
     print("Ensure the stylus is just touching the top "
           + "left corner of the screen")
 
+    # Calibrate Y
     while True:
-        value = input("Type in a height value for the printhead, "
+        value = input("Type in a Y value for the printhead, "
+                      + "or finish by typing 'Y' ")
+
+        try:
+            y_pos = float(value)
+            requests.post(get_url()
+                          + "/printer/gcode/script?script=G1 Y"
+                          + str(y_pos))
+
+            print("Position: " + str(get_position()))
+        except ValueError:
+            if value == "y" or value == "Y":
+                break
+
+    # Calibrate Z
+    while True:
+        value = input("Type in a Z value for the printhead, "
                       + "or finish by typing 'Y' ")
         global screen_z_value
 
@@ -74,12 +91,17 @@ def calibrate():
     start_position = get_position()
     print("Start position: " + str(start_position))
 
+    # Hop up
+    requests.post(get_url()
+                  + "/printer/gcode/script?script=G1 Z"
+                  + str(height + 3))
+
 
 def get_position():
     response = requests.get(get_url()
                             + "/printer/objects/query?gcode_move=position")
     response = json.loads(response.text)
-    return response["result"]["status"]["gcode_move"]["position"]
+    return response["result"]["status"]["gcode_move"]["position"][:3]
 
 
 def send_script(script):
