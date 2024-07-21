@@ -13,7 +13,7 @@ printer_ip = "192.168.1.144"
 printer_port = 7125
 
 # A safety feature so you don't destroy your bed/phone
-printer_min_z = 3
+printer_min_z = 12.5
 
 # Software
 

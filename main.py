@@ -61,7 +61,9 @@ def solve_wordle():
 
     print("Generating words...")
 
-    letters = [letter[0] for letter in letter_data]
+    letters = [letter * len(letter_data[letter]) for letter in letter_data]
+    letters = "".join(letters)
+    print(letters)
     words = word_gen.get_possibilities(letters)
 
     print("Found the words...")
@@ -83,10 +85,11 @@ def solve_wordle():
             letter_data[letter].append(position := letter_data[letter].pop(0))
             gcode.goto(position)
 
-    print("Sending to printer...")
+    response = None
     while response != "y" and response != "Y":
-        response = input("Start a wordle game. Ready to start? [Ny] ")
+        response = input("Send to printer? [Ny] ")
 
+    print("Sending to printer...")
     printer_manager.send_script(gcode.get_code())
 
 
