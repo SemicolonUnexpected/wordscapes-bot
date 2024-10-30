@@ -1,4 +1,8 @@
-# wordscapes bot
+# Wordscapes Bot
+
+![The Bot!!!](./video.gif)
+
+# Initial rundown
 
 This is quite a painful challenge...
 
